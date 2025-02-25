@@ -50,8 +50,8 @@ function MessageBar() {
       messageType: "text",
       fileUrl: undefined,
     };
-    
-    socket.emit("sendMessage",send_it, (ack)=>{
+
+    socket.emit("sendMessage", send_it, (ack) => {
       console.log("✅ Server acknowledged message:", ack);
     });
     setmessage("");
@@ -61,7 +61,20 @@ function MessageBar() {
   return (
     <div className="h-[8vh] bg-[#1c1d25] flex items-center justify-center px-8 mb-6 gap-6 ">
       <div className="flex-1 flex bg-[#2a2b33] rounded-md items-center justify-between gap-5 pr-5">
-        <input type="text" className="flex p-4 bg-transparent rounded-md focus:border-none focus:outline-none w-full" placeholder="Enter Message" value={message} onChange={e => setmessage(e.target.value)} />
+        <input
+          type="text"
+          className="flex p-4 bg-transparent rounded-md focus:border-none focus:outline-none w-full"
+          placeholder="Enter Message"
+          value={message}
+          onChange={e => setmessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault(); // Prevents unintended behavior (e.g., form submission)
+              handleSendMessage();
+            }
+          }}
+        />
+
         <div className=" flex gap-5 items-center justify-center">
           <button className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-500 transition-all">
             <GrAttachment className="text-xl" />

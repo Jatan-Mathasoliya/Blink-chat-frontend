@@ -7,6 +7,7 @@ import Chat from './pages/chat'
 import { useAppStore } from './store'
 import apiClient from './lib/api-client'
 import { GET_USER_INFO } from './utils/constants'
+import RefinedEyeLoader from './EyeLoader'
 
 const PrivateRoute = ({children})=>{
   const {userInfo} = useAppStore();
@@ -55,13 +56,7 @@ console.log({response})
 
 if(loading){
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-900">
-    <div className="relative w-16 h-16">
-      <div className="absolute w-16 h-16 bg-blue-500 rounded-full animate-ping"></div>
-      <div className="absolute w-12 h-12 bg-blue-400 rounded-full animate-pulse"></div>
-      <div className="absolute w-8 h-8 bg-white rounded-full animate-blink"></div>
-    </div>
-  </div>
+    <RefinedEyeLoader />
   )
 }
 
