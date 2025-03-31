@@ -57,8 +57,6 @@ export const SocketProvider = ({ children }) => {
             return;
         }
 
-        console.log("🛠️ Setting up event listeners... Socket instance:", socketRef.current);
-
         const handleReceiveMessage = (message) => {
             if (!message) {
                 console.error("Received an empty message!");

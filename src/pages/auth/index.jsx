@@ -61,7 +61,6 @@ function Auth() {
     if (validateLogin()) {
       try {
         const response = await apiClient.post(LOGIN_ROUTES, { email, password }, { withCredentials: true });
-        console.log('Response:', response.data);
         toast.success('Login successful!');
         if (response.data.user.id) {
           setUserInfo(response.data.user);
@@ -79,7 +78,6 @@ function Auth() {
     if (validateSignup()) {
       try {
         const response = await apiClient.post(SIGNUP_ROUTES, { email, password }, { withCredentials: true });
-        console.log('Response:', response.data);
         toast.success('Signup successful!');
         if (response.status === 201) {
           setUserInfo(response.data.user);

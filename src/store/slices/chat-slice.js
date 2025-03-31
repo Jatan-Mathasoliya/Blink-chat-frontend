@@ -13,12 +13,12 @@ export const useContact = create((set, get) => ({
 export const useChatStore = create((set, get) => ({
     selectedChatType: undefined,
     selectedChatMessages: [],
-
+    directMessagesContacts: [],
     setSelectedChatType: (selectedChatType) => set({ selectedChatType }),
 
     setSelectedChatMessages: (selectedChatMessages) =>
         set({ selectedChatMessages }),
-
+    setDirectMessagesContact: (directMessagesContacts) => set({ directMessagesContacts }),
     // Function to add a new message
     addMessage: (message) => {
         const selectedChatMessages = get().selectedChatMessages;

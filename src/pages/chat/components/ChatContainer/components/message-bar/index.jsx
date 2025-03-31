@@ -7,10 +7,13 @@ import { createAuthSlice } from "@/store/slices/auth-slice";
 import { useSocket } from "@/context/SocketContext";
 import { useContact } from "@/store/slices/chat-slice";
 import { useAppStore } from "@/store";
+import apiClient from "@/lib/api-client";
+import { UPLOAD_FILE_ROUTE } from "@/utils/constants";
 
 function MessageBar() {
 
   const emojiRef = useRef();
+  const fileInputRef = useRef();
   const [emojiPickerOpen, setemojiPickerOpen] = useState(false)
   const [message, setmessage] = useState("")
   const { selectedChatType } = createAuthSlice();
@@ -57,6 +60,47 @@ function MessageBar() {
     setmessage("");
   };
 
+  const handleAttachmentClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }
+
+  const handleAttachmentChange = async (event) => {
+    try {
+      const file = event.target.files[0];
+      if (file) {
+
+        const formData = new FormData();
+        // formData.append("This is data")
+        formData.append("file", file);
+
+        console.log("formdata : ", formData);
+
+        const response = await apiClient.post(UPLOAD_FILE_ROUTE, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        });
+
+        if (response.status === 200 && response.data) {
+          const { filePath } = response.data;
+          socket.emit("sendMessage", {
+            sender: userInfo.id,
+            content: undefined,
+            recipient: contact._id,
+            messageType: "file",
+            fileUrl: filePath,
+          }, (ack) => {
+            console.log("✅ Server acknowledged message:", ack);
+          });
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="h-[8vh] bg-[#1c1d25] flex items-center justify-center px-8 mb-6 gap-6 ">
@@ -76,9 +120,10 @@ function MessageBar() {
         />
 
         <div className=" flex gap-5 items-center justify-center">
-          <button className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-500 transition-all">
+          <button className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-500 transition-all" onClick={handleAttachmentClick}>
             <GrAttachment className="text-xl" />
           </button>
+          <input type="file" className=" hidden" ref={fileInputRef} onChange={handleAttachmentChange} name="file" id="file" />
           <div className=" relative">
             <button className="text-neutral-500 focus:border-none focus:outline-none focus:text-white duration-500 transition-all" onClick={() => setemojiPickerOpen(true)}>
               <RiEmojiStickerLine className="text-xl" />

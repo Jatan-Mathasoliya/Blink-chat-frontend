@@ -97,8 +97,6 @@ const handleDeleteImage = async () => {
       toast.success("Profile image deleted successfully");
       setimage(null);
     }
-    console.log(image)
-    console.log("Called functios")
   }catch(err){
     console.error({err})
     toast.error("Failed to remove Image.")

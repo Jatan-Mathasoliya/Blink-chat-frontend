@@ -38,11 +38,10 @@ function NewDm() {
         if (!firstName) {
             setsearchedContacts([])
         }
-
         try {
             const response = await apiClient.post(CONTACTS, { firstName })
             const data = response.data.contacts
-            console.log(data)
+            console.log(response)
             if (response.status === 200 && response.data.contacts) {
                 setsearchedContacts(data)
             }
@@ -87,7 +86,7 @@ function NewDm() {
                         <DialogDescription></DialogDescription>
                     </DialogHeader>
                     <div>
-                        <Input placeholder="Search Contacts" className=" rounded-lg p-6 bg-[#2c2e3b] border-none" onChange={(e) => setfirstName(e.target.value)}/>
+                        <Input placeholder="Search Contacts" className=" rounded-lg p-6 bg-[#2c2e3b] border-none" onChange={(e) => setfirstName(e.target.value)} />
                     </div>
                     < ScrollArea className='h-[275px]'>
                         <div>
@@ -145,13 +144,6 @@ function NewDm() {
                                 </div>
                             </div>
                         )}
-                    {/* <div className=" flex items-center justify-center">
-                            <button onClick={searchContacts} 
-                            className=" bg-purple-500 text-white p-3 w-[22vw] rounded-lg hover:bg-purple-800 transition-all duration-300"
-                            >
-                                Search Contact
-                            </button>
-                        </div> */}
                 </DialogContent>
             </Dialog>
 
